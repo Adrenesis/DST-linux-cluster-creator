@@ -97,7 +97,7 @@ Enter the maximum number of players: " -n 2 -r
         (( REPLY >= 1 && REPLY <= 64 )) || var_check=false
     done
     max_players=$REPLY
-}	
+}    
 
 prompt_pvp() {
     read -p "
@@ -122,9 +122,9 @@ Do you wish to pause the server when no one is connected?[Y/n]" -n 1 -r
 }
 
 prompt_cluster_name() {
-        read -p "
+    read -p "
 Give your server a name:" -r
-        cluster_name=$REPLY
+    cluster_name=$REPLY
 }
 
 prompt_console() {
@@ -180,10 +180,10 @@ prompt_password() {
     while [ $var_check = false ]
     do
     read -s -p "Give your server a password:" -r
-        	password=$REPLY
+            password=$REPLY
     read -s -p "Type it again" -r
-        	if [ $REPLY = $password ]; then
-	    var_check=true
+    if [ $REPLY = $password ]; then
+        var_check=true
     fi
     done
 }
@@ -192,8 +192,8 @@ prompt_password() {
         read -p "
     Give your cluster an ID:" -r
         cluster_id=$REPLY
-}	
-	
+}    
+    
 prompt_intro() {
     echo "#########################################################"
     echo "###### DoNotStarveTogetherDedicated Server Manager ######"
@@ -216,8 +216,8 @@ prompt_intro() {
     do
         echo "Choose what do you want to do:"
         echo 
-	    echo "[0] Create a new Cluster"
-	    echo "[1] Manage an existing Cluster"
+        echo "[0] Create a new Cluster"
+        echo "[1] Manage an existing Cluster"
         echo "[2] Exit"
         read -p "" -n 1 -r
         case $REPLY in
@@ -344,7 +344,7 @@ prompt_manage_cluster() {
         echo 
     echo "Which cluster do you want to manage?"
     ls -d ~/.klei/DoNotStarveTogether/*/ | awk -F'/' '{print "["pmc_cpt++"] " $6;
-            	   array_cluster[pmc_cpt]=$6;}'
+                   array_cluster[pmc_cpt]=$6;}'
     array_cluster[7]=3
     echo ${array_cluster[1]}
 }
