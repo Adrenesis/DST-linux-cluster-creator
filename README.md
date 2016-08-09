@@ -27,5 +27,7 @@ Version | Availability | Content
 # Dev environment
 ## Versionning
 Please, use the branch for the version of your code.
+
 e.G. You have an issue fixed to the milestone "Version 0.1": you have to code on the branch "0.1".
+
 It will be easier to stabilize versions and put into production.
