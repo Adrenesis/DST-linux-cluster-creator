@@ -12,3 +12,8 @@ Allow you to create a cluster for dont starve together very fast and very easily
 On the first screen you will be prompted to ***create*** or ***edit*** a cluster. ***Edition*** is still a work in progress and will be available with the "screen" package, in 1.0 version.
 
 This script still ***does not*** support ***iptables*** but it's a feature that will come later.
+
+# Changelog:
+Version | Availability | Content
+------------ | ------------- | -------------
+0.1 | Not stable | See https://github.com/Adrenesis/DST-linux-cluster-creator/milestone/2
