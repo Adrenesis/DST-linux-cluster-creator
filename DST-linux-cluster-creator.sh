@@ -11,8 +11,8 @@ ask_port() {
     local var_check=false
     while [ $var_check = false ]
     do
-        read -p "
-Enter port for $1: " -n 6 -r port
+        read -p "Enter port for $1: " -n 6 -r port
+        echo
         var_check=true
         [[ "$port" =~ ^[0-9]+$ ]] || var_check=false
         (( port >= 0 && port <= 65535 )) || var_check=false
@@ -37,17 +37,17 @@ ask_ports() {
 
 prompt_cluster_creation() {
     read -p "Do you wish to create a new cluster?[y/N]" -n 1 -r
-    echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         exit 1
     fi
+    echo
 }
 prompt_disable_caves() {
     read -p "Do you wish to enable caves?[Y/n]" -n 1 -r
-    echo
     if [[ $REPLY =~ ^[Nn]$ ]]; then
         caves_disabled=true
         shard=false
+        echo
     else
         caves_disabled=false
         shard=true
@@ -61,10 +61,11 @@ prompt_gamemode() {
     do
         echo "Choose your gamemode:"
         echo
-        echo "[1] Endless"
-        echo "[2] Survival"
-        echo "[3] Wilderness"
-        read -p "" -n 1 -r
+        echo " [1] Endless"
+        echo " [2] Survival"
+        echo " [3] Wilderness"
+        echo
+        read -p "Chosen gamemode: " -n 1 -r
         case $REPLY in
             "1")
             gamemode="endless"
@@ -83,6 +84,7 @@ prompt_gamemode() {
             echo
             var_check=false
         esac
+        echo
     done
 }
 
@@ -90,49 +92,45 @@ prompt_max_players() {
     local var_check=false
     while [ $var_check = false ]
     do
-        read -p "
-Enter the maximum number of players: " -n 2 -r
+        read -p "Enter the maximum number of players: " -n 3 -r
         var_check=true
         [[ "$REPLY" =~ ^[0-9]+$ ]] || var_check=false
         (( REPLY >= 1 && REPLY <= 64 )) || var_check=false
     done
+    echo
     max_players=$REPLY
 }	
 
 prompt_pvp() {
-    read -p "
-Do you wish to enable pvp?[y/N]" -n 1 -r
-    echo
+    read -p "Do you wish to enable pvp?[y/N]" -n 1 -r
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         pvp="true"
+        echo
     else
         pvp="false"
     fi
 }
 
 prompt_pause_when_empty() {
-    read -p "
-Do you wish to pause the server when no one is connected?[Y/n]" -n 1 -r
-    echo
+    read -p "Do you wish to pause the server when no one is connected?[Y/n]" -n 1 -r
     if [[ $REPLY =~ ^[Nn]$ ]]; then
         pause_when_empty="false"
+        echo
     else
         pause_when_empty="true"
     fi
 }
 
 prompt_cluster_name() {
-    read -p "
-Give your server a name:" -r
+    read -p "Give your server a name (name of your cluster on steam server browser) : " -r
     cluster_name=$REPLY
 }
 
 prompt_console() {
-    read -p "
-Do you wish to enable console on your dedicated server?[Y/n]" -n 1 -r
-    echo
+    read -p "Do you wish to enable console on your dedicated server?[Y/n]" -n 1 -r
     if [[ $REPLY =~ ^[Nn]$ ]]; then
         console="false"
+        echo
     else
         console="true"
     fi
@@ -141,13 +139,14 @@ prompt_intention() {
     var_check=false
     while [ $var_check = false ]
     do
-        echo "Choose your gamemode:"
+        echo "Choose your intention:"
         echo
-        echo "[1] Cooperative"
-        echo "[2] Social"
-        echo "[3] Competitive"
-        echo "[4] Madness"
-        read -p "" -n 1 -r
+        echo " [1] Cooperative"
+        echo " [2] Social"
+        echo " [3] Competitive"
+        echo " [4] Madness"
+        echo
+        read -p "Chosed intention: " -n 1 -r
         case $REPLY in
             "1")
             intention="cooperative"
@@ -170,6 +169,7 @@ prompt_intention() {
             echo
             var_check=false
         esac
+        echo
     done
 }
 
@@ -180,16 +180,19 @@ prompt_password() {
     do
         read -s -p "Give your server a password:" -r
         password=$REPLY
+        echo
         read -s -p "Type it again" -r
         if [ $REPLY = $password ]; then
             var_check=true
+            echo
+        else
+            echo -e "\nPasswords doesnt match"
         fi
     done
 }
 
 prompt_cluster_id() {
-    read -p "
-Give your cluster an ID:" -r
+    read -p "Give your cluster an ID (folder name of you cluster) : " -r
     cluster_id=$REPLY
 }	
     
@@ -239,27 +242,26 @@ Give your cluster an ID:" -r
 #}
 ###
 prompt_intro_create_server() {
-    echo "#########################################################"
-    echo "###### DoNotStarveTogetherDedicated Cluster Creator #####"
-    echo "#########################################################"
-    echo -e "\n\n"
-    echo "You are about to create 3 ini files, to setup your new "
-    echo "cluster, which are"
-    echo "->$1cluster.ini"
-    echo "->$1Master/server.ini"
-    echo "->$1Caves/serve.ini"
-    echo -e "\n>"
-    echo -e "\n"
-    echo "You will have to enter 7 ports (only 4 if you dont use "
-    echo "caves) which are:"
-    echo "->master port (in cluster.ini)"
-    echo "->server port (in Master/server.ini)"
-    echo "->master server port (in Master/server.ini)"
-    echo "->authentication port (in Master/server.ini)"
-    echo "->server port (in Caves/server.ini) (Caves Only)"
-    echo "->master server port (in Caves/server.ini) (Caves Only)"
-    echo "->authentication port (in Caves/server.ini) (Caves Only)"
-    echo -e "\n"
+    echo
+    echo
+    echo "###########################################################################"
+    echo "#               DoNotStarveTogetherDedicated Cluster Creator              #"
+    echo "###########################################################################"
+    echo
+    echo "You are about to create 3 ini files, to setup your new cluster, which are:"
+    echo " => $1cluster.ini"
+    echo " => $1Master/server.ini"
+    echo " => $1Caves/serve.ini"
+    echo
+    echo "You will have to enter 7 ports (only 4 if you dont use caves) which are:"
+    echo " => master port (in cluster.ini)"
+    echo " => server port (in Master/server.ini)"
+    echo " => master server port (in Master/server.ini)"
+    echo " => authentication port (in Master/server.ini)"
+    echo " => server port (in Caves/server.ini) (Caves Only)"
+    echo " => master server port (in Caves/server.ini) (Caves Only)"
+    echo " => authentication port (in Caves/server.ini) (Caves Only)"
+    echo
 }
 
 worldgen_lua() {
@@ -343,20 +345,20 @@ set_serv_ini() {
 #}
 
 create_server() {
-    working_directory="~/.klei/DoNotStarveTogether/" # << line you have to edit to be in the right folder
+    working_directory="/home/steamcmd/.klei/DoNotStarveTogether/" # << line you have to edit to be in the right folder
     cd $working_directory 
     prompt_intro_create_server $working_directory
     prompt_cluster_creation
     prompt_cluster_id
-    prompt_disable_caves
-    prompt_gamemode
+    prompt_cluster_name
+    prompt_password
     prompt_max_players
+    prompt_gamemode
+    prompt_intention
+    prompt_disable_caves
     prompt_pvp
     prompt_pause_when_empty
     prompt_console
-    prompt_intention
-    prompt_cluster_name
-    prompt_password
     ask_ports
     create_directory "Cluster_$cluster_id"
     cd Cluster_$cluster_id/
