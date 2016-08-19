@@ -138,7 +138,6 @@ prompt_pause_when_empty() {
 prompt_cluster_name() {
     read -p "Give your server a name (name of your cluster on steam server browser) : " -r
     cluster_name=${REPLY//[^a-zA-Z0-9_]/}
-    echo
     echo -e "Your server will be displayed as $cluster_name"
 }
 
@@ -210,8 +209,7 @@ prompt_password() {
 prompt_cluster_id() {
     read -p "Give your cluster an ID (folder name of you cluster) : " -r
     cluster_id=${REPLY//[^a-zA-Z0-9_]/}
-    echo
-    echo -e "Your server folder will be $cluster_name"
+    echo -e "Your server folder will be Cluster_$cluster_id"
 }
 
 prompt_intro_create_server() {
@@ -326,8 +324,6 @@ create_server() {
     path_to_file="./cluster.ini"
     cluster_ini "$gamemode" "$max_players" "$pvp" "$pause_when_empty" "$cluster_name" "$intention" "$console" "$shard" "$master_port" "$path_to_file" "$password"
     password=" "
-    cd ~
-    cp -f ~/.klei/DoNotStarveTogether/cluster_token.txt ~/.klei/DoNotStarveTogether/Cluster_$cluster_id/
 }
 ####MAIN####
 create_server
