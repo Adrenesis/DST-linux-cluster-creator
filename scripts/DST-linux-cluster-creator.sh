@@ -11,26 +11,36 @@ ask_port() {
     local var_check=false
     while [ $var_check = false ]
     do
-        read -p "Enter port for $1: " -n 6 -r port
-        echo
+        read -p "Enter port for $1: " -n 6 -r
+        port=$REPLY
         var_check=true
         [[ "$port" =~ ^[0-9]+$ ]] || var_check=false
         (( port >= 0 && port <= 65535 )) || var_check=false
+        if [ $var_check = false ]; then
+            echo
+            echo -e "Error : wrong value"
+        fi
     done
-    echo $port
 }
 
 
 ask_ports() {
     echo "You will be asked for ports:"
-    master_port=$(ask_port "master port (in cluster.ini)")
-    master_server_port=$(ask_port "server port (in Master/server.ini)")
-    master_master_server_port=$(ask_port "master server port (in Master/server.ini)")
-    master_authentication_port=$(ask_port "authentication port (in Master/server.ini)")
+    ask_port "master port (in cluster.ini)"
+    master_port=$port
+    ask_port "server port (in Master/server.ini)"
+    master_server_port=$port
+    ask_port "master server port (in Master/server.ini)"
+    master_master_server_port=$port
+    ask_port "authentication port (in Master/server.ini)"
+    master_authentication_port=$port
     if [ $caves_disabled = false ]; then
-        caves_server_port=$(ask_port "server port (in Caves/server.ini)")
-        caves_master_server_port=$(ask_port "master server port (in Caves/server.ini)")
-        caves_authentication_port=$(ask_port "authentication port (in Master/server.ini)")
+        ask_port "server port (in Caves/server.ini)"
+        caves_server_port=$port
+        ask_port "master server port (in Caves/server.ini)"
+        caves_master_server_port=$port
+        ask_port "authentication port (in Master/server.ini)"
+        caves_authentication_port=$port
     fi
 }
 
@@ -80,7 +90,7 @@ prompt_gamemode() {
             var_check=true
             ;;
             *)
-            echo "wrong value"
+            echo "Error : wrong value"
             echo
             var_check=false
         esac
@@ -96,6 +106,10 @@ prompt_max_players() {
         var_check=true
         [[ "$REPLY" =~ ^[0-9]+$ ]] || var_check=false
         (( REPLY >= 1 && REPLY <= 64 )) || var_check=false
+        if [ $var_check = false ]; then
+            echo
+            echo -e "Error : wrong value"
+        fi
     done
     echo
     max_players=$REPLY
@@ -123,7 +137,9 @@ prompt_pause_when_empty() {
 
 prompt_cluster_name() {
     read -p "Give your server a name (name of your cluster on steam server browser) : " -r
-    cluster_name=$REPLY
+    cluster_name=${REPLY//[^a-zA-Z0-9_]/}
+    echo
+    echo -e "Your server will be displayed as $cluster_name"
 }
 
 prompt_console() {
@@ -165,7 +181,7 @@ prompt_intention() {
             var_check=true
             ;;
             *)
-            echo "wrong value"
+            echo "Error : wrong value"
             echo
             var_check=false
         esac
@@ -193,7 +209,9 @@ prompt_password() {
 
 prompt_cluster_id() {
     read -p "Give your cluster an ID (folder name of you cluster) : " -r
-    cluster_id=$REPLY
+    cluster_id=${REPLY//[^a-zA-Z0-9_]/}
+    echo
+    echo -e "Your server folder will be $cluster_name"
 }
 
 prompt_intro_create_server() {
@@ -282,7 +300,7 @@ set_serv_ini() {
 }
 
 create_server() {
-    working_directory="/home/steamcmd/.klei/DoNotStarveTogether/" # << line you have to edit to be in the right folder
+    working_directory="/home/adrenesis/.klei/DoNotStarveTogether/" # << line you have to edit to be in the right folder
     cd $working_directory 
     prompt_intro_create_server $working_directory
     prompt_cluster_creation
@@ -310,7 +328,6 @@ create_server() {
     password=" "
     cd ~
     cp -f ~/.klei/DoNotStarveTogether/cluster_token.txt ~/.klei/DoNotStarveTogether/Cluster_$cluster_id/
-    prompt_intro
 }
 ####MAIN####
 create_server
