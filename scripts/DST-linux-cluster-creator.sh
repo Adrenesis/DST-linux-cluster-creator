@@ -194,53 +194,8 @@ prompt_password() {
 prompt_cluster_id() {
     read -p "Give your cluster an ID (folder name of you cluster) : " -r
     cluster_id=$REPLY
-}	
-    
-#prompt_intro() {
-#    echo "#########################################################"
-#    echo "###### DoNotStarveTogetherDedicated Server Manager ######"
-#    echo "#########################################################"
-#   echo -e "\n\n"
-#    echo "Welcome to DoNotStarveTogetherDedicated Server Manager"
-#	echo
-#	echo "Existing clusters:"
-#	ls -d ~/.klei/DoNotStarveTogether/*/ | awk -F'/' '{print $6}'
-#	echo
-#	echo "Clusters and shards running:"
-#	echo "---------------------------------------------------------"
-#	echo -e "|Cluster\t\t|Shard\t|\tRunning since\t|"
-#	screen -ls | grep DST | awk -F'[.()_]' '{print "|-----------------------|-------|-----------------------|""\n|" $4 "\t\t\t|" $6 "|" $7 "\t|"}'
-#	echo "---------------------------------------------------------"
-#    echo 
-#
-#    var_check=false
-#    while [ $var_check = false ]
-#    do
-#	    echo "Choose what do you want to do:"
-#        echo 
-#    	echo "[0] Create a new Cluster"
-#    	echo "[1] Manage an existing Cluster"#
-#	    echo "[2] Exit"
-#            read -p "" -n 1 -r
-#            case $REPLY in
-#                "0")
-#                create_server
-#                ;;
-#                "1")
-#                prompt_manage_cluster
-#                ;;
-#                "2")
-#                var_check=true
-#                ;;
-#                *)
-#               echo "wrong value"
-#               echo
-#               var_check=false
-#            esac
-#    done
-#
-#}
-###
+}
+
 prompt_intro_create_server() {
     echo
     echo
@@ -325,24 +280,6 @@ set_serv_ini() {
         serv_ini "$caves_server_port" "$caves_master_server_port" "$caves_authentication_port" false "$path_to_file"
     fi
 }
-
-#prompt_manage_cluster() {
-#	pmc_cpt=0
-#	echo "Existing clusters:"
-#	ls -d ~/.klei/DoNotStarveTogether/*/ | awk -F'/' '{print $6}'
-#	echo
-#	echo "Clusters and shards running:"
-#	echo "---------------------------------------------------------"
-#	echo -e "|Cluster\t\t|Shard\t|\tRunning since\t|"
-#	screen -ls | grep DST | awk -F'[.()_]' '{print "|-----------------------|-------|-----------------------|""\n|" $4 "\t\t\t|" $6 "|" $7 "\t|"}'
-#	echo "---------------------------------------------------------"
-#        echo 
-#	echo "Which cluster do you want to manage?"
-#	ls -d ~/.klei/DoNotStarveTogether/*/ | awk -F'/' '{print "["pmc_cpt++"] " $6;
-#							   array_cluster[pmc_cpt]=$6;}'
-#	array_cluster[7]=3
-#	echo ${array_cluster[1]}
-#}
 
 create_server() {
     working_directory="/home/steamcmd/.klei/DoNotStarveTogether/" # << line you have to edit to be in the right folder
