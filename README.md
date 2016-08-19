@@ -23,7 +23,7 @@ This script still ***does not*** support ***iptables*** but it's a feature that 
 # Changelog:
 Version | Availability | Content
 ------------ | ------------- | -------------
-0.1 | Not stable | See https://github.com/Adrenesis/DST-linux-cluster-creator/milestone/2
+0.0.0 | Stable | The very first version, permitting to create a cluster
 
 # Dev environment
 ## Versionning
