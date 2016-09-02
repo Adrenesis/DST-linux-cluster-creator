@@ -349,6 +349,8 @@ cfg_parser() {
     ini=( ${ini[*]/%/ \)} )     # close array parenthesis
     ini=( ${ini[*]/%\} \)/\}} ) # remove extra parenthesis
     eval "$(echo "${ini[*]}")" # eval the result
+    shard=$caves_enabled
+    
 }
 
 args_parser() {
@@ -684,7 +686,10 @@ fill_server_ini_wraper() {
 # server create core function
 
 create_server() {
-
+    if [ -d "./Cluster_$cluster_id/" ]; then
+        echo -e "Error : this cluster (Cluster_$cluster_id ) already exists... Aborting"
+        exit
+    fi
     create_directory "Cluster_$cluster_id"
     cd Cluster_$cluster_id/
     fill_server_ini_wraper "Master"
