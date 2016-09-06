@@ -7,7 +7,7 @@ prompt_port() {
         read -p "Enter port for $1: " -n 6 -r
         port=$REPLY
         var_check="true"
-        if [ "$(check_port "${final_vars_array[$i]}")" == "false" ]; then
+        if [ "$(check_port "$port")" == "false" ]; then
             var_check="false"
             echo
             echo -e "Error : wrong value"
@@ -35,12 +35,21 @@ prompt_ports() {
     fi
 }
 
-prompt_cluster_creation() {
-    read -p "Do you wish to create a new cluster?[y/N]" -n 1 -r
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        exit 1
-    fi
+prompt_max_players() {
+    local var_check=false
+    while [ $var_check = false ]
+    do
+        read -p "Enter the maximum number of players: " -n 3 -r
+        var_check=true
+        [[ "$REPLY" =~ ^[0-9]+$ ]] || var_check=false
+        (( REPLY >= 1 && REPLY <= 64 )) || var_check=false
+        if [ $var_check = false ]; then
+            echo
+            echo -e "Error : wrong value"
+        fi
+    done
     echo
+    max_players=$REPLY
 }
 
 prompt_enable_caves() {
@@ -52,6 +61,36 @@ prompt_enable_caves() {
     else
         caves_enabled="true"
         shard="true"
+    fi
+}
+
+prompt_pvp() {
+    read -p "Do you wish to enable pvp?[y/N]" -n 1 -r
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        pvp="true"
+        echo
+    else
+        pvp="false"
+    fi
+}
+
+prompt_pause_when_empty() {
+    read -p "Do you wish to pause the server when no one is connected?[Y/n]" -n 1 -r
+    if [[ $REPLY =~ ^[Nn]$ ]]; then
+        pause_when_empty="false"
+        echo
+    else
+        pause_when_empty="true"
+    fi
+}
+
+prompt_console() {
+    read -p "Do you wish to enable console on your dedicated server?[Y/n]" -n 1 -r
+    if [[ $REPLY =~ ^[Nn]$ ]]; then
+        console="false"
+        echo
+    else
+        console="true"
     fi
 }
 
@@ -86,59 +125,6 @@ prompt_gamemode() {
         esac
         echo
     done
-}
-
-prompt_max_players() {
-    local var_check=false
-    while [ $var_check = false ]
-    do
-        read -p "Enter the maximum number of players: " -n 3 -r
-        var_check=true
-        [[ "$REPLY" =~ ^[0-9]+$ ]] || var_check=false
-        (( REPLY >= 1 && REPLY <= 64 )) || var_check=false
-        if [ $var_check = false ]; then
-            echo
-            echo -e "Error : wrong value"
-        fi
-    done
-    echo
-    max_players=$REPLY
-}
-
-prompt_pvp() {
-    read -p "Do you wish to enable pvp?[y/N]" -n 1 -r
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        pvp="true"
-        echo
-    else
-        pvp="false"
-    fi
-}
-
-prompt_pause_when_empty() {
-    read -p "Do you wish to pause the server when no one is connected?[Y/n]" -n 1 -r
-    if [[ $REPLY =~ ^[Nn]$ ]]; then
-        pause_when_empty="false"
-        echo
-    else
-        pause_when_empty="true"
-    fi
-}
-
-prompt_cluster_name() {
-    read -p "Give your server a name (name of your cluster on steam server browser) : " -r
-    cluster_name=${REPLY//[^a-zA-Z0-9_]/}
-    echo -e "Your server will be displayed as $cluster_name"
-}
-
-prompt_console() {
-    read -p "Do you wish to enable console on your dedicated server?[Y/n]" -n 1 -r
-    if [[ $REPLY =~ ^[Nn]$ ]]; then
-        console="false"
-        echo
-    else
-        console="true"
-    fi
 }
 
 prompt_intention() {
@@ -196,10 +182,53 @@ prompt_password() {
     done
 }
 
+prompt_cluster_name() {
+    local var_check=false
+    local cluster_name_checker
+    while [ $var_check = false ]
+    do
+        var_check="true"
+        read -p "Give your server a name (name of your cluster on steam server browser) : " -r
+        cluster_name_checker=$REPLY
+        cluster_name=${cluster_name_checker//[^a-zA-Z0-9_]/}
+        if [ "$cluster_name_checker" != "$cluster_name" ] || [ "$cluster_name_checker" = "" ]; then
+            var_check="false"
+            echo
+            echo -e "Error : cluster_name should not be empty and can only contain alphanumics and underscores"
+        else 
+            echo -e "Your server will be displayed as $cluster_name"
+        fi
+
+    done
+}
+
 prompt_cluster_id() {
-    read -p "Give your cluster an ID (folder name of you cluster) : " -r
-    cluster_id=${REPLY//[^a-zA-Z0-9_]/}
-    echo -e "Your server folder will be Cluster_$cluster_id"
+
+    local var_check=false
+    local cluster_id_checker
+    while [ $var_check = false ]
+    do
+        var_check="true"
+        read -p "Give your cluster an ID (folder name of you cluster) : " -r
+        cluster_id_checker=$REPLY
+        cluster_id=${cluster_id_checker//[^a-zA-Z0-9_]/}
+        if [ "$cluster_id_checker" != "$cluster_id" ] || [ "$cluster_id_checker" = "" ]; then
+            var_check="false"
+            echo
+            echo -e "Error : cluster_id should not be empty and can only contain alphanumics and underscores"
+        else 
+            echo -e "Your cluster folder will be $cluster_id"
+        fi
+
+    done
+}
+
+prompt_cluster_creation() {
+    read -p "Do you wish to create a new cluster?[y/N]" -n 1 -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        exit 1
+    fi
+    echo
 }
 
 prompt_intro_create_server() {
