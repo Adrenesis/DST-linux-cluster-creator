@@ -643,7 +643,7 @@ check_global() {
 
 create_directory() {
     path_to_directory="./$1/"
-    if [ -d "$path_to_direcory" ]; then
+    if [ -d "$path_to_directory" ]; then
         echo "$1 directory already exists"
     else
         mkdir -v $1
